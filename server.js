@@ -17,7 +17,6 @@ const PORT = process.env.PORT || 3000
 const { Book, Author } = require("./database/index.js")
 
 app.use(cors())
-
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 app.get("/hello", (req, res) => res.send("Hello from server!"))
