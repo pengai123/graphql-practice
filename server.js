@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 const { graphqlHTTP } = require('express-graphql')
 const {
 	GraphQLSchema,
@@ -15,6 +16,7 @@ if (process.env.NODE_ENV === "development") {
 const PORT = process.env.PORT || 3000
 const { Book, Author } = require("./database/index.js")
 
+app.use(cors())
 
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 

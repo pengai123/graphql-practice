@@ -1,7 +1,7 @@
 const { Book, Author } = require("./index.js")
 
-const findAuthor = (id, cb = () => { }) => {
-	Author.findOne({ id })
+const findAuthor = (obj, cb = () => { }) => {
+	Author.findOne(obj)
 		.then(result => cb(null, result))
 		.catch(err => cb(err))
 }
@@ -13,8 +13,8 @@ const findAllAuthors = (cb = () => { }) => {
 		.catch(err => cb(err))
 }
 
-const findBook = (id, cb = () => { }) => {
-	Book.findOne({ id })
+const findBook = (obj, cb = () => { }) => {
+	Book.findOne(obj)
 		.then(result => cb(null, result))
 		.catch(err => cb(err))
 }
