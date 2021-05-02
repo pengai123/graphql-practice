@@ -13,8 +13,8 @@ console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 app.get("/hello", (req, res) => res.send("Hello from server!"))
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
-apolloServer.applyMiddleware({ app, cors });
+const apolloServer = new ApolloServer({ cors: { origin: '*', credentials: true }, typeDefs, resolvers });
+apolloServer.applyMiddleware({ app });
 
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}, Graphql path: ${apolloServer.graphqlPath}`))
