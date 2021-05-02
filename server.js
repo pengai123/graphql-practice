@@ -9,13 +9,12 @@ if (process.env.NODE_ENV === "development") {
 }
 const PORT = process.env.PORT || 4000
 
-app.use(cors())
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 app.get("/hello", (req, res) => res.send("Hello from server!"))
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
-apolloServer.applyMiddleware({ app });
+apolloServer.applyMiddleware({ app, cors });
 
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}, Graphql path: ${apolloServer.graphqlPath}`))
