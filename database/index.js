@@ -7,7 +7,9 @@ mongoose.connect(process.env.mongodbAtlasUrl, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true
-}).catch(err => console.log('mongodb connection error:', err))
+})
+.then(() => console.log('MongoDB is connected!'))
+.catch(err => console.log('MongoDB connection error:', err))
 
 
 const Book = mongoose.model('books', {
@@ -38,4 +40,15 @@ const Author = mongoose.model('authors', {
 	}
 })
 
-module.exports = { Book, Author };
+
+const Account = mongoose.model("users", {
+	username: {
+		type: String,
+		unique: true
+	},
+	email: String,
+	password: String,
+	createdAt: String
+})
+
+module.exports = { Book, Author, Account };

@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
 const { graphqlHTTP } = require('express-graphql')
 const {
 	GraphQLSchema,
@@ -13,13 +15,35 @@ const {
 if (process.env.NODE_ENV === "development") {
 	require("dotenv").config()
 }
-const PORT = process.env.PORT || 3000
-const { Book, Author } = require("./database/index.js")
+const PORT = process.env.PORT || 4000
+const { Book, Author, Account } = require("./database/index.js")
 
 app.use(cors())
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 app.get("/hello", (req, res) => res.send("Hello from server!"))
+
+
+// Account.create({
+//   username: 'user333',
+//   email: 'email111',
+//   password: '$2a$12$Ezr.VG9efL2yfKI68Vta/uyPGqZ19z1zIfprSd36zv/M448td6mIu',
+//   createdAt: '2021-05-02T08:34:44.996Z'
+// })
+// .then(result => console.log('result:', result))
+// .catch(err => console.log('err:', err))
+
+const UserType = new GraphQLObjectType({
+	name: "User",
+	description: 'This represents a user',
+	fields: () => ({
+		id: { type: GraphQLNonNull(GraphQLString) },
+		username: { type: GraphQLNonNull(GraphQLString) },
+		email: { type: GraphQLNonNull(GraphQLString) },
+		createdAt: { type: GraphQLNonNull(GraphQLString) },
+		token: { type: GraphQLNonNull(GraphQLString) }
+	})
+})
 
 const BookType = new GraphQLObjectType({
 	name: 'Book',
@@ -110,6 +134,33 @@ const RootMutationType = new GraphQLObjectType({
 			resolve: async (parent, args) => {
 				let authors = await Author.find();
 				return Author.create({ id: authors.length + 1, name: args.name })
+			}
+		},
+		addUser: {
+			type: UserType,
+			description: 'Create an account',
+			args: {
+				username: { type: GraphQLNonNull(GraphQLString) },
+				email: { type: GraphQLNonNull(GraphQLString) },
+				password: { type: GraphQLNonNull(GraphQLString) }
+			},
+			resolve: async (parent, args) => {
+				try {
+					let currentTime = new Date().toISOString()
+					let password = await bcrypt.hash(args.username, 12)
+					let userObj = {
+						username: args.username,
+						email: args.email,
+						password: password,
+						createdAt: currentTime
+					}
+					console.log('userObj:', userObj)
+					let { _id, username, email, createdAt } = await Account.create(userObj)
+					let token = jwt.sign({id: _id, username, email, createdAt}, "aasgdyuasdjkansdahsdk")
+					return {id: _id, username, email, createdAt, token}
+				} catch (err) {
+					throw new Error("duplicated username");
+				}
 			}
 		}
 	})
