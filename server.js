@@ -13,7 +13,14 @@ console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 app.get("/hello", (req, res) => res.send("Hello from server!"))
 
-const apolloServer = new ApolloServer({ cors: { origin: '*', credentials: true }, typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+	cors: { origin: '*', credentials: true },
+	typeDefs,
+	resolvers,
+	introspection: true,
+	playground: true
+});
+
 apolloServer.applyMiddleware({ app });
 
 
