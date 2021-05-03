@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs")
 
 const resolvers = {
 	Author: {
-		books: async (author, args, context, info) => {
+		books: async (author, args, context) => {
 			try {
 				return Book.find({ authorId: author.id })
 			} catch (err) {
@@ -14,7 +14,7 @@ const resolvers = {
 		}
 	},
 	Book: {
-		author: async (book, args, context, info) => {
+		author: async (book, args, context) => {
 			try {
 				return Author.findOne({ id: book.authorId })
 			} catch (err) {
@@ -23,28 +23,28 @@ const resolvers = {
 		}
 	},
 	Query: {
-		books: async (_, args, { res }, info) => {
+		books: async (_, args, { res }) => {
 			try {
 				return Book.find()
 			} catch (err) {
 				throw new Error(err)
 			}
 		},
-		book: async (parent, { id }, context, info) => {
+		book: async (_, { id }, context) => {
 			try {
 				return Book.findOne({ id: id })
 			} catch (err) {
 				throw new Error(err)
 			}
 		},
-		authors: async (_, args, { res }, info) => {
+		authors: async (_, args, { req, res }) => {
 			try {
 				return Author.find()
 			} catch (err) {
 				throw new Error(err)
 			}
 		},
-		author: async (parent, { id }, context, info) => {
+		author: async (_, { id }, context) => {
 			try {
 				return Author.findOne({ id: id })
 			} catch (err) {
@@ -53,7 +53,7 @@ const resolvers = {
 		}
 	},
 	Mutation: {
-		createAccount: async (parent, args, context, info) => {
+		createAccount: async (_, args, context) => {
 			try {
 
 				let currentTime = new Date().toISOString()
@@ -67,7 +67,7 @@ const resolvers = {
 				throw new Error(err);
 			}
 		},
-		addBook: async (parent, { name, authorId }, context, info) => {
+		addBook: async (_, { name, authorId }, context) => {
 			try {
 				let books = await Book.find();
 				let id = books.length + 1;
