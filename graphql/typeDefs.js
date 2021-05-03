@@ -1,7 +1,7 @@
 // const { gql } = require('apollo-server-express');   
-const gql = require('graphql-tag');
+// const gql = require('graphql-tag');
 
-const typeDefs = gql`
+const typeDefs = `
 	type User {
 		id: String!,
 		username: String!,

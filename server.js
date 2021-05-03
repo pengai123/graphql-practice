@@ -16,11 +16,10 @@ app.use(cors())
 app.get("/hello", (req, res) => res.send("Hello from this specific server!"))
 
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
 app.use('/graphql', graphqlHTTP({
-	schema: schema,
-	// rootValue: resolvers,
+	schema: executableSchema,
 	graphiql: true
 }))
 
