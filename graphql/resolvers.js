@@ -23,14 +23,14 @@ const resolvers = {
 		}
 	},
 	Query: {
-		getBooks: async (_, args, { res }, info) => {
+		books: async (_, args, { res }, info) => {
 			try {
 				return Book.find()
 			} catch (err) {
 				throw new Error(err)
 			}
 		},
-		getBookById: async (parent, { id }, context, info) => {
+		book: async (parent, { id }, context, info) => {
 			try {
 				return Book.findOne({ id: id })
 			} catch (err) {

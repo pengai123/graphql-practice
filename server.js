@@ -1,27 +1,27 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
-const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require("./graphql/typeDefs.js")
 const resolvers = require("./graphql/resolvers.js")
+const { graphqlHTTP } = require('express-graphql')
+const { makeExecutableSchema } = require('graphql-tools');
 if (process.env.NODE_ENV === "development") {
 	require("dotenv").config()
 }
 const PORT = process.env.PORT || 4000
 
+
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-
-app.get("/hello", (req, res) => res.send("Hello from server!"))
-
-const apolloServer = new ApolloServer({
-	cors: { origin: '*', credentials: true },
-	typeDefs,
-	resolvers,
-	introspection: true,
-	playground: true
-});
-
-apolloServer.applyMiddleware({ app });
+app.use(cors())
+app.get("/hello", (req, res) => res.send("Hello from this specific server!"))
 
 
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}, Graphql path: ${apolloServer.graphqlPath}`))
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+app.use('/graphql', graphqlHTTP({
+	schema: schema,
+	// rootValue: resolvers,
+	graphiql: true
+}))
+
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`))
