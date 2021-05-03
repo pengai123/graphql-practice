@@ -1,4 +1,4 @@
-// const { gql } = require('apollo-server-express');
+// const { gql } = require('apollo-server-express');   
 const gql = require('graphql-tag');
 
 const typeDefs = gql`
@@ -26,6 +26,8 @@ const typeDefs = gql`
 	type Query{
 		books: [Book]
 		book(id: Int!): Book
+		authors: [Author]
+		author(id: Int!): Author
 	}
 
 	type Mutation{

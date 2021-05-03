@@ -36,6 +36,20 @@ const resolvers = {
 			} catch (err) {
 				throw new Error(err)
 			}
+		},
+		authors: async (_, args, { res }, info) => {
+			try {
+				return Author.find()
+			} catch (err) {
+				throw new Error(err)
+			}
+		},
+		author: async (parent, { id }, context, info) => {
+			try {
+				return Author.findOne({ id: id })
+			} catch (err) {
+				throw new Error(err)
+			}
 		}
 	},
 	Mutation: {
