@@ -1,13 +1,17 @@
 // const { gql } = require('apollo-server-express');   
-// const gql = require('graphql-tag');
+const gql = require('graphql-tag');
 
-const typeDefs = `
+const typeDefs = gql`
 	type User {
 		id: String!,
 		username: String!,
 		email: String!,
 		createdAt: String!,
 		token: String!
+	}
+
+	type Logout {
+		status: Boolean!
 	}
 
 	type Author{
@@ -34,6 +38,8 @@ const typeDefs = `
 		addAuthor(name: String!): Author
 		addBook(name: String!, authorId: Int!): Book
 		createAccount(username: String!, email: String!, password: String!): User
+		login(username: String!, password: String!): User
+		logout: Logout 
 	}
 `
 

@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 4000
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 app.use(cors())
 app.use(cookieParser())
-app.get("/hello", (req, res) => res.send("Hello from this specific server!"))
+
+
+app.get("/", (req, res) => res.send("WELCOME TO GRAPHQL SERVER!"))
 
 
 const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
